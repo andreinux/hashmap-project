@@ -162,6 +162,62 @@ class hashmap{
         return this.count;
     }
 
+    clear(){
+        this.capacity = 16;
+        this.buckets = new Array(this.capacity);
+        this.count = 0;
+    }
+
+    keys(){
+        let array = [];
+        let curr;
+        for(let bucket of this.buckets){
+            if(bucket === undefined) continue;
+
+            curr = bucket.head;
+
+            while(curr != null){
+                array.push(curr.key);
+                curr = curr.next;
+            }
+        }
+
+        return array;
+    }
+    
+     values(){
+        let array = [];
+        let curr;
+        for(let bucket of this.buckets){
+            if(bucket === undefined) continue;
+
+            curr = bucket.head;
+
+            while(curr != null){
+                array.push(curr.value);
+                curr = curr.next;
+            }
+        }
+
+        return array;
+    }
+
+      entries(){
+        let array = [];
+        let curr;
+        for(let bucket of this.buckets){
+            if(bucket === undefined) continue;
+
+            curr = bucket.head;
+
+            while(curr != null){
+                array.push([curr.key, curr.value]);
+                curr = curr.next;
+            }
+        }
+
+        return array;
+    }
 }
 
 class linkedlist {
@@ -179,12 +235,100 @@ class Node{
 }
 
 
-let map = new hashmap;
-map.set("benj", 19);
-map.set("john", 19);
-map.set("mark", 19);
-map.set("el", 19);
-map.set("jas", 19);
-console.log(map.count);
+const test = new hashmap();
 
-console.log(map.length());
+// Initial setup
+console.log("INITIAL CAPACITY:", test.capacity);
+console.log("INITIAL LENGTH:", test.length());
+
+// Populate the hash map
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
+
+// Check load factor
+console.log("\n--- AFTER 12 INSERTIONS ---");
+console.log("Length:", test.length());
+console.log("Capacity:", test.capacity);
+console.log("Load factor:", test.count / test.capacity);
+
+// Overwrite existing values
+test.set("apple", "green");
+test.set("banana", "brown");
+test.set("lion", "orange");
+
+console.log("\n--- AFTER OVERWRITING ---");
+console.log("Length:", test.length()); 
+console.log("Capacity:", test.capacity);
+console.log("Apple:", test.get("apple"));
+console.log("Banana:", test.get("banana"));
+console.log("Lion:", test.get("lion"));
+
+// Trigger resizing
+test.set("moon", "silver");
+
+console.log("\n--- AFTER RESIZING ---");
+console.log("Length:", test.length());
+console.log("Capacity:", test.capacity);
+console.log("Load factor:", test.count / test.capacity);
+
+// Check overwriting after resizing
+test.set("moon", "white");
+test.set("frog", "lime");
+
+console.log("\n--- OVERWRITING AFTER RESIZING ---");
+console.log("Length:", test.length());
+console.log("Capacity:", test.capacity);
+console.log("Moon:", test.get("moon"));
+console.log("Frog:", test.get("frog"));
+
+// Test get()
+console.log("\n--- GET ---");
+console.log(test.get("apple")); 
+console.log(test.get("moon"));
+console.log(test.get("unknown")); // undefined
+
+// Test has()
+console.log("\n--- HAS ---");
+console.log(test.has("apple"));   // true
+console.log(test.has("moon"));    // true
+console.log(test.has("unknown")); // false
+
+// Test remove()
+console.log("\n--- REMOVE ---");
+console.log(test.remove("apple"));   // true
+console.log(test.remove("unknown")); // false
+console.log("Length after removal:", test.length());
+console.log("Apple exists:", test.has("apple"));
+
+// Test keys(), values(), entries()
+console.log("\n--- COLLECTION METHODS ---");
+console.log("Keys:", test.keys());
+console.log("Values:", test.values());
+console.log("Entries:", test.entries());
+
+// Test clear()
+console.log("\n--- CLEAR ---");
+test.clear();
+console.log("Length:", test.length());     // 0
+console.log("Capacity:", test.capacity);   // 16
+console.log("Keys:", test.keys());         // []
+console.log("Values:", test.values());     // []
+console.log("Entries:", test.entries());   // []
+
+// Test inserting again after clear()
+test.set("new key", "new value");
+
+console.log("\n--- AFTER CLEAR AND REINSERTION ---");
+console.log("Length:", test.length()); 
+console.log("Value:", test.get("new key"));
+

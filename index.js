@@ -86,6 +86,82 @@ class hashmap{
             }
         
     }
+
+
+    get(key){
+        let index = this.hash(key);
+
+        if(this.buckets[index] == undefined){
+            return undefined;
+        }
+
+       let curr =  this.buckets[index].head;
+
+       while(curr != null){
+        if(curr.key == key){
+            return curr.value
+        }
+        curr = curr.next;
+       }
+
+       return undefined;
+    }
+
+
+    has(key){
+        let index = this.hash(key);
+
+        if(this.buckets[index] == undefined){
+            return false;
+        }
+
+       let curr =  this.buckets[index].head;
+
+       while(curr != null){
+        if(curr.key == key){
+            return true;
+        }
+        curr = curr.next;
+       }
+
+       return false;
+    }
+
+   remove(key){
+        let index = this.hash(key);
+        let prev =null;
+        
+
+        if(this.buckets[index] == undefined){
+            return false;
+        }
+
+        let curr =  this.buckets[index].head;
+
+       while(curr != null){
+        
+
+        if(curr.key === key){
+              if(prev == null){
+                this.buckets[index].head = curr.next;
+              }else{     
+                prev.next = curr.next;
+              }
+            this.count--;
+            return true;
+        }
+       
+         prev = curr;
+         curr = curr.next;
+       }
+
+       return false;
+    }
+
+    length(){
+        return this.count;
+    }
+
 }
 
 class linkedlist {
@@ -104,10 +180,11 @@ class Node{
 
 
 let map = new hashmap;
-
 map.set("benj", 19);
-map.set("ella", 19);
-map.set("abe", 19);
+map.set("john", 19);
 map.set("mark", 19);
-map.set("benj", 13);
+map.set("el", 19);
+map.set("jas", 19);
 console.log(map.count);
+
+console.log(map.length());
